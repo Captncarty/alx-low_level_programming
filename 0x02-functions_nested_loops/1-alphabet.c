@@ -1,9 +1,11 @@
 #include "main.h"
 
 /**
- * main - Check description
- * Description: It prints the alphabet in lowercase
- * Return: 0.
+ * print_alphabet - check description
+ *
+ * Description: to print alphabet in lowercase
+ *
+ * Return: Nothin.
  */
 
 void print_alphabet(void)
