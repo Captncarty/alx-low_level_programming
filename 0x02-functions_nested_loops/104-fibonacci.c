@@ -1,40 +1,69 @@
-#include <stdio.h>
+#include"main.h"
 
 /**
- * main - print fibonacci
+ * numLength - returns the length of string
  *
- * Return: always 0
- */
+ * @num: operand number
+ *
+ * Return: number of digits
+*/
+
+int numLength(int num)
+{
+	int length = 0;
+
+	if (!num)
+		return (1);
+
+	while (num)
+	{
+		num = num / 10;
+		length += 1;
+	}
+
+	return (length);
+}
+
+/**
+ * main - Entry point
+ *
+ * Description: prints the first 98 Fibonacci numbers
+ *	starting with 1 and 2 followed by a new line
+ *
+ * Return: Always 0 (Success)
+*/
+
 int main(void)
 {
-	unsigned long int a, a1, a2, b, b1, b2, c, c1, c2, d, e;
-	a = 1;
-	b = 2;
-	c = a + b;
+	int count, initial0s;
+	unsigned long f1 = 1, f2 = 2, sum, mx = 100000000, f1o = 0, f2o = 0, sumo = 0;
 
-	printf("%lu, ", a);
-	printf("%lu, ", b);
-	for (d = 3; d < 89; d++)
+	for (count = 1; count <= 98; ++count)
 	{
-		printf("%lu, ", c);
-		a = b;
-		b = c;
-		c = a + b;
+		if (f1o > 0)
+			printf("%lu", f1o);
+		initial0s = numLength(mx) - 1 - numLength(f1);
+
+		while (f1o > 0 && initial0s > 0)
+		{
+			printf("%d", 0);
+			--initial0s;
+		}
+
+		printf("%lu", f1);
+
+		sum = (f1 + f2) % mx;
+		sumo = f1o + f2o + (f1 + f2) / mx;
+		f1 = f2;
+		f1o = f2o;
+		f2 = sum;
+		f2o = sumo;
+
+		if (count != 98)
+			printf(", ");
+		else
+			printf("\n");
 	}
-	b1 = b / 1000000000;
-	b2 = b % 1000000000;
-	c1 = c / 1000000000;
-	c2 = c % 1000000000;
-	for (e = 89; e < 98; e++)
-	{
-		printf("%lu%lu, ", c1, c2);
-		a1 = b1;
-		a2 = b2;
-		b1 = c1;
-		b2 = c2;
-		c1 = a1 + b1 + ((a2 + b2) / 1000000000);
-		c2 = (a2 + b2) % 1000000000;
-	}
-printf("%lu%lu\n", c1, c2);
+
 	return (0);
 }
