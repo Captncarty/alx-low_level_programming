@@ -1,26 +1,26 @@
-#include <stdio.h>
+#include <main.h>
 
 /**
- * main - print fibonacci
+ * main - Entry point
  *
- * Return: always 0
+ * Return: Always 0 (Success)
  */
+
 int main(void)
 {
-	unsigned int a, b, c, d, s;
+	int i;
+	long int fibonacci[50], sum = 2;
 
-	a = 1;
-	b = 2;
-	c = 3;
-	s = 2;
-	for (d = 2; d <= 32; d++)
+	fibonacci[0] = 1;
+	fibonacci[1] = 2;
+
+	for (i = 2; i < 50; i++)
 	{
-		if (c % 2 == 0)
-			s = s + c;
-		a = b;
-		b = c;
-		c = a + b;
+		fibonacci[i] = fibonacci[i - 1] + fibonacci[i - 2];
+		if ((fibonacci[i] % 2) == 0 && fibonacci[i] < 4000000)
+			sum += fibonacci[i];
 	}
-	printf("%u\n", s);
+	printf("%ld\n", sum);
+
 	return (0);
 }
