@@ -1,43 +1,89 @@
 #include "lists.h"
 
+size_t looped_listint_count(listint_t *head);
+size_t free_listint_safe(listint_t **h);
+
 /**
- * free_listint_safe - A function that frees a list
- * @h: A pointer listint_t structure
- * Return: The size of the list that was free'd
+ * looped_listint_count - frees a looped list
+ * @head: A pointer to the head
+ * Return: size of list freed
  */
-size_t free_listint_safe(listint_t **h)
+
+size_t looped_listint_count(listint_t *head)
 {
-	size_t counter = 0;
-	listint_t *temp;
+	listint_t *start, *end;
+	size_t nodes = 1;
 
-	temp = *h;
-	while (temp)
+	if (head == NULL || head->next == NULL)
+		return (0);
+
+	start = head->next;
+	end = (head->next)->next;
+
+	while (end)
 	{
-		temp = *h;
-		temp = temp->next;
-		free_list(temp);
-		counter++;
-	}
-	*h = NULL;
+		if (start == end)
+		{
+			start = head;
+			while (start != end)
+			{
+				nodes++;
+				start = start->next;
+				end = end->next;
+			}
 
-	return (counter);
+			start = start->next;
+			while (start != end)
+			{
+				nodes++;
+				start = start->next;
+			}
+
+			return (nodes);
+		}
+
+		start = start->next;
+		end = (end->next)->next;
+	}
+
+	return (0);
 }
 
 /**
- * free_list - A function that frees a listint_t recursively
- * @head: A pointer to the listint_t structure
- * Return: Nothing
+ * free_listint_safe - Frees listint_t list
+ * @h: A pointer to the address
+ * Return: The size of the list that was freed.
  */
-void free_list(listint_t *head)
+size_t free_listint_safe(listint_t **h)
 {
-	listint_t *temp;
+	listint_t *tmp;
+	size_t nodes, index;
 
-	if (head)
+	nodes = looped_listint_count(*h);
+
+	if (nodes == 0)
 	{
-		temp = head;
-		temp = temp->next;
-		free(temp);
-		free_list(temp);
+		for (; h != NULL && *h != NULL; nodes++)
+		{
+			tmp = (*h)->next;
+			free(*h);
+			*h = tmp;
+		}
 	}
-	free(head);
+
+	else
+	{
+		for (index = 0; index < nodes; index++)
+		{
+			tmp = (*h)->next;
+			free(*h);
+			*h = tmp;
+		}
+
+		*h = NULL;
+	}
+
+	h = NULL;
+
+	return (nodes);
 }
